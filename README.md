@@ -1,16 +1,14 @@
-## Hi there 👋
+<h1 align="center">⚡ Shinzy ⚡</h1>
+<p align="center">
+  <b>Dev Architect | Code Artisan | Tech Alchemist</b>  
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/Code-Clean-informational?style=flat&logo=visualstudiocode&logoColor=white&color=2bbc8a"/>
+  <img src="https://img.shields.io/badge/Stack-Fullstack-blueviolet?style=flat&logo=react&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Status-Building_&_Breaking-black?style=flat"/>
+</p>
 
-<!--
-**shinzyx/shinzyx** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+---
 
-Here are some ideas to get you started:
-
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+```ascii
+      ⚙️ Code fast. Think clean. Build legendary. ⚙️
