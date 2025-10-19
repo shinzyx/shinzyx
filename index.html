@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cyberpunk Love Confession</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Playwrite+AU+TAS:wght@100..400&display=swap");
+      :root {
+        --bg1: #0f1724;
+        --bg2: #1b1f3a;
+        --accent: #ff4da6;
+        --accent2: #7afcff;
+        --glass: rgba(255, 255, 255, 0.04);
+        --muted: rgba(255, 255, 255, 0.6);
+        --radius: 16px;
+        font-family:
+          "Playwrite AU TAS",
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          Arial,
+          cursive;
+      }
+
+      * {
+        font-family:
+          "Playwrite AU TAS",
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          Arial,
+          cursive;
+      }
+
+      html,
+      body {
+        position: relative;
+        height: 100%;
+        min-height: 100vh;
+        margin: 0;
+        background: url("/bg.jpg") center/cover no-repeat fixed;
+        color: #e6eef8;
+        overflow: hidden;
+        z-index: -2;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.25) 0%,
+            rgba(0, 0, 0, 0.35) 100%
+          ),
+          rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(1px);
+        z-index: -1;
+      }
+
+      /* Optional: Hiệu ứng xuất hiện mượt */
+      /*   body::before {
+        animation: fadeInOverlay 1.5s ease-in-out;
+      }
+
+      @keyframes fadeInOverlay {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }*/
+
+      .center {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .popup {
+        position: relative;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.04),
+          rgba(255, 255, 255, 0.02)
+        );
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 0 50px rgba(255, 77, 166, 0.2);
+        backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: min(90vw, 300px);
+        padding: 20px;
+        margin-top: -100px;
+        text-align: center;
+        opacity: 0;
+        transform: scale(0.1) translateY(30px);
+        transition: all 1s cubic-bezier(0.2, 0.9, 0.25, 1);
+      }
+
+      .popup.show {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+
+      .gif img {
+        display: block;
+        width: 170px;
+        height: 170px;
+        object-fit: cover;
+        border-radius: 16px;
+        margin-bottom: 16px;
+        /*box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);*/
+      }
+
+      h2 {
+        font-size: 20px;
+        margin: 0 0 10px;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 14px;
+        justify-content: center;
+      }
+
+      .btn {
+        padding: 10px 16px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 14px;
+        transition: transform 0.2s ease;
+      }
+
+      .btn.accept {
+        background: linear-gradient(90deg, var(--accent2), #b96bff);
+        color: #041022;
+      }
+
+      .btn.reject {
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        position: relative;
+      }
+
+      .sad-layer {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .sad {
+        position: absolute;
+        font-size: 22px;
+        opacity: 0;
+        transform: translateY(0) scale(0.9);
+        animation: rise 1.3s ease-out forwards;
+      }
+
+      @keyframes rise {
+        0% {
+          opacity: 1;
+          transform: translateY(0) scale(0.9);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-90px) scale(1.1);
+        }
+      }
+
+      .final {
+        text-align: center;
+        display: none;
+      }
+
+      .final.show {
+        display: block;
+      }
+
+      .big-days {
+        font-size: 60px;
+        font-weight: 800;
+        margin: 10px 0;
+      }
+
+      .dev {
+        position: fixed;
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--muted);
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 6px 14px;
+        border-radius: 14px;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 0 20px rgba(255, 77, 166, 0.15);
+      }
+
+      .dev span {
+        background: linear-gradient(90deg, var(--accent2), var(--accent));
+        -webkit-background-clip: text;
+        color: transparent;
+        font-weight: 700;
+      }
+
+      .player {
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        column-gap: 25px;
+        padding: 10px;
+        width: 300px;
+        text-align: center;
+        transition: all 0.4s ease;
+      }
+
+      .player:hover {
+        box-shadow: 0 0 35px rgba(255, 0, 150, 0.6);
+        transform: translateY(-3px);
+      }
+
+      .title {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #ff79c6;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .play-btn {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: none;
+        background: linear-gradient(135deg, #ff0099, #493240);
+        box-shadow: 0 0 15px rgba(255, 0, 150, 0.6);
+        cursor: pointer;
+        color: #fff;
+        font-size: 26px;
+        transition: all 0.3s ease;
+      }
+
+      .play-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 25px rgba(255, 0, 150, 0.8);
+      }
+
+      .slider {
+        width: 100%;
+        height: 2px;
+        appearance: none;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        outline: none;
+        cursor: pointer;
+      }
+
+      .slider::-webkit-slider-thumb {
+        appearance: none;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #ff79c6;
+        box-shadow: 0 0 10px #ff79c6;
+        transition: 0.2s;
+      }
+
+      .time {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        opacity: 0.8;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="player">
+      <div class="controls">
+        <button class="play-btn" id="playBtn">▶</button>
+      </div>
+      <div class="right-are">
+        <div class="title" id="title">💗 Cyberpunk Love 💗</div>
+        <input type="range" id="progress" class="slider" value="0" />
+        <div class="time">
+          <span id="current">0:00</span>
+          <span id="duration">0:00</span>
+        </div>
+      </div>
+    </div>
+
+    <audio id="audio" src="/mp3.m4a"></audio>
+
+    <div class="dev">Coding by <span>DiepSinh</span></div>
+    <div class="center" id="center"></div>
+
+    <script>
+      const audio = document.getElementById("audio");
+      const playBtn = document.getElementById("playBtn");
+      const progress = document.getElementById("progress");
+      const current = document.getElementById("current");
+      const duration = document.getElementById("duration");
+
+      let isPlaying = false;
+
+      playBtn.addEventListener("click", () => {
+        if (isPlaying) {
+          audio.pause();
+        } else {
+          audio.play();
+        }
+      });
+
+      audio.addEventListener("play", () => {
+        isPlaying = true;
+        playBtn.textContent = "⏸";
+        cover.style.animationPlayState = "running";
+      });
+
+      audio.addEventListener("pause", () => {
+        isPlaying = false;
+        playBtn.textContent = "▶";
+        cover.style.animationPlayState = "paused";
+      });
+
+      audio.addEventListener("loadedmetadata", () => {
+        duration.textContent = formatTime(audio.duration);
+      });
+
+      audio.addEventListener("timeupdate", () => {
+        progress.value = (audio.currentTime / audio.duration) * 100 || 0;
+        current.textContent = formatTime(audio.currentTime);
+      });
+
+      progress.addEventListener("input", () => {
+        audio.currentTime = (progress.value / 100) * audio.duration;
+      });
+
+      function formatTime(seconds) {
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m}:${s < 10 ? "0" + s : s}`;
+      }
+
+      const QUESTIONS = [
+        {
+          text: "Câu làm người yêu mình nhé?",
+          gif: "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyZXltc3BpYTNwd24zaG5qcjZqd2l2bTlobTNkNWYxNjM4Yjl2a3BhZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/LoTu2rQPpj7CeSQztG/giphy.gif"
+        },
+        {
+          text: "Nếu mình nấu ăn cho cậu mỗi tối, cậu có đồng ý không?",
+          gif: "https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyNXF4azM1cnd2dXVzNWZvcmN6MnBwemNtM3M4YWRjM2xqaDg0ZG5peSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/5QRtBXibb3uOzdRQ8I/giphy.gif"
+        },
+        {
+          text: "Cậu có muốn cùng mình đi xem hoàng hôn không?",
+          gif: "https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUycHVqYzU1bHc3ZXlxdnBvNDJ4YjAwenYyM2poeTVhN2ppaWUydjhsdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/Zsormm4i0J1sy7PJs6/giphy.gif"
+        },
+        {
+          text: "Vậy mình bắt đầu hẹn hò từ hôm nay nhé?",
+          gif: "https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUydzI0Nm0wZGk4cHpua2VreHI2aGJrMGJxM2MxbDNnOXdxcXBteGYwZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/QXvUuIO0ALjr7VWlZh/giphy.gif"
+        }
+      ];
+
+      const root = document.getElementById("center");
+      const LS_KEY = "cyber_confess_start_date_v1";
+      let idx = 0;
+
+      function createPopup(q, i) {
+        const el = document.createElement("div");
+        el.className = "popup";
+        el.innerHTML = `
+        <div class="gif"><img src="${q.gif}" alt="gif"></div>
+        <h2>${q.text}</h2>
+        <div class="buttons">
+          <button class="btn accept">Đồng ý</button>
+          <button class="btn reject">Không</button>
+        </div>
+        <div class="sad-layer"></div>
+      `;
+
+        const accept = el.querySelector(".btn.accept");
+        const reject = el.querySelector(".btn.reject");
+        const sadLayer = el.querySelector(".sad-layer");
+
+        accept.addEventListener("click", () => {
+          el.remove();
+          next();
+        });
+
+        reject.addEventListener("mouseenter", () => {
+          moveBtn(reject);
+          spawnSad(sadLayer);
+        });
+        reject.addEventListener("click", e => {
+          e.preventDefault();
+          moveBtn(reject);
+          spawnSad(sadLayer);
+        });
+
+        return el;
+      }
+
+      function moveBtn(btn) {
+        const x = (Math.random() - 0.5) * 200;
+        const y = (Math.random() - 0.5) * 100;
+        btn.style.transform = `translate(${x}px, ${y}px)`;
+      }
+
+      function spawnSad(layer) {
+        const count = 3 + Math.floor(Math.random() * 4);
+        const emojis = ["💔", "😢", "😭", "😿", "☹️"];
+        for (let i = 0; i < count; i++) {
+          const s = document.createElement("div");
+          s.className = "sad";
+          s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          s.style.left = Math.random() * 100 + "%";
+          s.style.top = "70%";
+          layer.appendChild(s);
+          setTimeout(() => s.remove(), 1500);
+        }
+      }
+
+      function showPopup(i) {
+        root.innerHTML = "";
+        const p = createPopup(QUESTIONS[i], i);
+        root.appendChild(p);
+        requestAnimationFrame(() => p.classList.add("show"));
+      }
+
+      function next() {
+        idx++;
+        if (idx < QUESTIONS.length) showPopup(idx);
+        else finish();
+      }
+
+      function finish() {
+        root.innerHTML = `<div class='popup show final'><h2>💞 Bắt đầu hành trình tình yêu 💞</h2><div class='big-days' id='daysCount'></div><div id='startDate'></div></div>`;
+        const today = new Date();
+        localStorage.setItem(LS_KEY, today.toISOString());
+        updateDays();
+      }
+
+      function updateDays() {
+        const raw = localStorage.getItem(LS_KEY);
+        if (!raw) return;
+        const start = new Date(raw);
+        const diff = Math.floor((Date.now() - start) / (1000 * 60 * 60 * 24));
+        document.getElementById(
+          "daysCount"
+        ).textContent = `${diff} ngày bên nhau ❤️`;
+        document.getElementById(
+          "startDate"
+        ).textContent = `Bắt đầu từ: ${start.toLocaleDateString()}`;
+      }
+
+      showPopup(0);
+    </script>
+
+    <script></script>
+  </body>
+</html>
